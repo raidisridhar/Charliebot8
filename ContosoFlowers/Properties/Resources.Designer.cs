@@ -19,7 +19,7 @@ namespace ContosoFlowers.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -133,7 +133,7 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select your billing address?.
+        ///   Looks up a localized string similar to Please select your billing address.
         /// </summary>
         internal static string RootDialog_BillingAddress_SelectSaved {
             get {
@@ -223,6 +223,15 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How can I can help you?.
+        /// </summary>
+        internal static string RootDialog_Greeting {
+            get {
+                return ResourceManager.GetString("RootDialog_Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep going.
         /// </summary>
         internal static string RootDialog_Menu_Cancel {
@@ -246,6 +255,24 @@ namespace ContosoFlowers.Properties {
         internal static string RootDialog_Menu_StartOver {
             get {
                 return ResourceManager.GetString("RootDialog_Menu_StartOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string RootDialog_OptionNo {
+            get {
+                return ResourceManager.GetString("RootDialog_OptionNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string RootDialog_OptionYes {
+            get {
+                return ResourceManager.GetString("RootDialog_OptionYes", resourceCulture);
             }
         }
         
@@ -326,6 +353,33 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report Adverse Events,SAE’s.
+        /// </summary>
+        internal static string RootDialog_Welcome_AdverseEvents {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_AdverseEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist for Visit, Procedures etc.,.
+        /// </summary>
+        internal static string RootDialog_Welcome_Checklist {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_Checklist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eligibility Criteria for study.
+        /// </summary>
+        internal static string RootDialog_Welcome_Criteria {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_Criteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to That is not a valid option. Please try again..
         /// </summary>
         internal static string RootDialog_Welcome_Error {
@@ -335,7 +389,16 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to Contoso Flowers. You can now order flowers or talk to support without leaving this bot..
+        ///   Looks up a localized string similar to Feed Back.
+        /// </summary>
+        internal static string RootDialog_Welcome_Feedback {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to Charlie bot. You can get instant help for Clinical trails questions  or talk to CRA.
         /// </summary>
         internal static string RootDialog_Welcome_Message {
             get {
@@ -353,7 +416,25 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to These are the flowers you are looking for!.
+        ///   Looks up a localized string similar to Protocol , Case Report, Consent Form Query.
+        /// </summary>
+        internal static string RootDialog_Welcome_Protocol {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_Protocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report  Protocol Deviations.
+        /// </summary>
+        internal static string RootDialog_Welcome_ProtocolDeviations {
+            get {
+                return ResourceManager.GetString("RootDialog_Welcome_ProtocolDeviations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your assistant to help clinical trails.
         /// </summary>
         internal static string RootDialog_Welcome_Subtitle {
             get {
@@ -362,7 +443,7 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Talk to support.
+        ///   Looks up a localized string similar to Talk to CRA.
         /// </summary>
         internal static string RootDialog_Welcome_Support {
             get {
@@ -371,7 +452,7 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to the Contoso Flowers.
+        ///   Looks up a localized string similar to Welcome to the Charlie bot.
         /// </summary>
         internal static string RootDialog_Welcome_Title {
             get {

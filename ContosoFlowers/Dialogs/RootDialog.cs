@@ -27,7 +27,8 @@
 
         private Models.Order order;
         private ConversationReference conversationReference;
-        
+
+
         public RootDialog(string checkoutUriFormat, IContosoFlowersDialogFactory dialogFactory, IOrdersService ordersService)
         {
             this.checkoutUriFormat = checkoutUriFormat;
@@ -58,14 +59,20 @@
 
             var options = new[]
             {
-                Resources.RootDialog_Welcome_Orders,
+                Resources.RootDialog_Welcome_Protocol,
+                Resources.RootDialog_Welcome_Checklist,
+                Resources.RootDialog_Welcome_Criteria,
+                Resources.RootDialog_Welcome_AdverseEvents,
+                Resources.RootDialog_Welcome_ProtocolDeviations,
+                Resources.RootDialog_Welcome_Feedback,
                 Resources.RootDialog_Welcome_Support
+
             };
             reply.AddHeroCard(
                 Resources.RootDialog_Welcome_Title,
                 Resources.RootDialog_Welcome_Subtitle,
                 options,
-                new[] { "https://placeholdit.imgix.net/~text?txtsize=56&txt=Contoso%20Flowers&w=640&h=330" });
+                new[] { "http://res.cloudinary.com/ctimages/image/upload/v1504042917/welcomebot_ou4h2n.png" });
 
             await context.PostAsync(reply);
 
@@ -76,20 +83,25 @@
         {
             var message = await result;
 
-            if (message.Text == Resources.RootDialog_Welcome_Orders)
+            if (message.Text == Resources.RootDialog_Welcome_Protocol)
             {
-                this.order = new Models.Order();
+                await context.PostAsync("Hi Jim, How are you? how may I help you today with Protocol , Case Report, Consent Form Query?");
+                context.Wait(this.MessageReceivedAsync);
 
-                // BotBuilder's LocationDialog
-                // Leverage DI to inject other parameters
-                var locationDialog = this.dialogFactory.Create<LocationDialog>(
-                    new Dictionary<string, object>()
-                    {
-                        { "prompt", string.Format(CultureInfo.CurrentCulture, Resources.RootDialog_DeliveryAddress_Prompt, message.From.Name ?? "User") },
-                        { "channelId", context.Activity.ChannelId }
-                    });
+                //this.order = new Models.Order();
 
-                context.Call(locationDialog, this.AfterDeliveryAddress);
+                //// BotBuilder's LocationDialog
+                //// Leverage DI to inject other parameters
+                //var locationDialog = this.dialogFactory.Create<LocationDialog>(
+                //    new Dictionary<string, object>()
+                //    {
+                //        { "prompt", string.Format(CultureInfo.CurrentCulture, Resources.RootDialog_DeliveryAddress_Prompt, message.From.Name ?? "User") },
+                //        { "channelId", context.Activity.ChannelId }
+                //    });
+
+                //context.Call(locationDialog, this.AfterDeliveryAddress);
+
+                //  
             }
             else if (message.Text == Resources.RootDialog_Welcome_Support)
             {
