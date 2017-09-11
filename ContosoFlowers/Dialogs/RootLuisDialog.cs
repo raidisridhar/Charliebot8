@@ -12,6 +12,13 @@
     using Microsoft.Bot.Connector;
     using ContosoFlowers.Properties;
     using ContosoFlowers.BotAssets.Extensions;
+    using ContosoFlowers.Handlers;
+    using Microsoft.Bot.Builder.Internals.Fibers;
+    using ContosoFlowers.Services;
+  
+    using System.Net.Http;
+    using ContosoFlowers.Models.Search;
+    using System.Configuration;
 
     [LuisModel("87001b9b-2bb7-461f-af7e-3dc08032f9e4", "9660d9c0c855475eace4e50e5e69d61c")]
     [Serializable]
@@ -28,12 +35,19 @@
         private const string EntityCancer = "Cancer";
 
         private const string EntityTest = "Test";
-        
+
         private IList<string> titleOptions = new List<string> { "“EGFR”", "“JAK2”", "“KRAS”", "“BRAF”", "“NRAS”", "“Tumor percent”" };
 
         private string chattername = "";
         private string priorintent = "";
+        private readonly ISearchService _BingService;
         
+
+        public RootLuisDialog()
+        {
+            // handlerFactory=
+            _BingService = new BingSearchService(new ApiHandler());
+        }
 
         [LuisIntent("Checklist")]
         public async Task Checklist(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
@@ -45,7 +59,7 @@
             priorintent = "Checklist";
             context.Wait(this.MessageReceived);
 
-            
+
         }
 
         [LuisIntent("Trial")]
@@ -58,7 +72,7 @@
             priorintent = "Trial";
             context.Wait(this.MessageReceived);
 
-            
+
         }
         [LuisIntent("Gleasonscore")]
         public async Task Gleasonscore(IDialogContext context, LuisResult result)
@@ -75,6 +89,70 @@
             await context.PostAsync("The estimated glomerular filtration rate (eGFR) is used to screen for and detect early kidney damage, to help diagnose chronic kidney disease (CKD), and to monitor kidney status");
 
             priorintent = "EGFR";
+            context.Wait(this.MessageReceived);
+        }
+
+        [LuisIntent("Search")]
+        [LuisIntent("Definition")]
+        [LuisIntent("Meaning")]
+        public async Task Search(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+           //sri  var search = new SearchIntentHandler(context, _BingService);
+            string summarytext = "Success";
+
+            //sri search.Respond(activity, result);
+            try
+            {
+                // Create a query
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ConfigurationManager.AppSettings["BingSearchServiceKey"]);
+                //var queryString = HttpUtility.ParseQueryString(string.Empty);
+                //queryString["q"] = "=+prostate+cancer+site%3awikipedia.org&form=BTCSWR";
+                //var query = "https://api.cognitive.microsoft.com/bing/v7.0/search?" + queryString;
+
+                //// Run the query
+                //HttpResponseMessage httpResponseMessage = client.GetAsync(query).Result;
+
+                //// Deserialize the response content
+                //var responseContentString = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                //Newtonsoft.Json.Linq.JObject responseObjects = Newtonsoft.Json.Linq.JObject.Parse(responseContentString);
+
+                //summarytext = DisplayAllRankedResults(responseObjects);
+
+                //========================
+                var query = result.Query;
+                query = query.Substring(query.IndexOf(" "), query.Length - query.IndexOf(" "));
+                // await this.botToUser.PostAsync(string.Format(Resources.SearchTopicTypeMessage));
+
+                string bingSearch =  this._BingService.FindArticles(query);
+                // Run the query
+                HttpResponseMessage httpResponseMessage = client.GetAsync(bingSearch).Result;
+                var rawResponse =  httpResponseMessage.Content.ReadAsStringAsync();
+                var responseContentString = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                Newtonsoft.Json.Linq.JObject responseObjects = Newtonsoft.Json.Linq.JObject.Parse(responseContentString);
+
+                // Handle success and error codes
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    summarytext =  DisplayAllRankedResults(responseObjects);
+                }
+                else
+                {
+                    summarytext = "Sorry I could not provide you appropriate answer. Please try something else.";
+                }
+
+               
+            }
+            catch (Exception e)
+            {
+                //display error
+                summarytext = "Sorry I could not provide you appropriate answer. Please try something else.";
+
+            }
+
+            //priorintent = "Search";
+            await context.PostAsync(summarytext);
+
             context.Wait(this.MessageReceived);
         }
 
@@ -173,7 +251,7 @@
         [LuisIntent("consentform")]
         public async Task consent(IDialogContext context, LuisResult result)
         {
-          
+
             await context.PostAsync("Do you need assistance on consent form?");
             priorintent = "consentform";
             context.Wait(this.MessageReceived);
@@ -196,7 +274,7 @@
             }
         }
 
-        
+
         [LuisIntent("Diagnosisissue")]
         public async Task Diagnosisissue(IDialogContext context, LuisResult result)
         {
@@ -209,9 +287,9 @@
         [LuisIntent("Participate")]
         public async Task Participate(IDialogContext context, LuisResult result)
         {
-           
+
             await this.ParticipationAsync(context, "Good question. Let me check the criteria and is there any roll over study for this trial. See if this information helps.");
-            
+
             priorintent = "Participate";
         }
 
@@ -224,7 +302,7 @@
 
             if (mystr == "YES")
             {
-                
+
                 await context.PostAsync("Great!! Do you have any other questions...");
                 context.Wait(this.MessageReceived);
             }
@@ -243,7 +321,7 @@
             string message2 = result.Query;
             string mystr = "";
             if (message.Length > 2)
-            { 
+            {
                 mystr = message.Substring(0, 3);
             }
             else
@@ -315,7 +393,7 @@
             else
             {
                 await context.PostAsync("is there anything else I can help you with?");
-                priorintent = "Sure";   
+                priorintent = "Sure";
                 context.Wait(this.MessageReceived);
             }
         }
@@ -325,7 +403,7 @@
         {
             await context.PostAsync("3 months");
             await context.PostAsync("Again all this information is available within Protocol Template under Sponsor for reference.");
-            
+
             priorintent = "Duration";
             context.Wait(this.MessageReceived);
         }
@@ -403,7 +481,7 @@
             string message = $"Sorry, I did not understand '{result.Query}'. Type 'help' if you need assistance.";
             priorintent = "None";
             await context.PostAsync(message);
-            
+
             context.Wait(this.MessageReceived);
         }
 
@@ -443,7 +521,7 @@
                 await context.PostAsync("Hi, Do you need assistance on consent form?");
                 context.Wait(this.MessageReceived);
 
-               
+
             }
             else if (message.Text == Resources.RootDialog_Welcome_Support)
             {
@@ -560,7 +638,7 @@
         private async Task StartOverAsync(IDialogContext context, IMessageActivity message)
         {
             await context.PostAsync(message);
-           // this.order = new Models.Order();
+            // this.order = new Models.Order();
             await this.WelcomeMessageAsync(context);
         }
 
@@ -590,6 +668,109 @@
             await context.PostAsync(message);
             // this.order = new Models.Order();
             await this.ParticipationMessageAsync(context);
+        }
+
+        private ZummerSearchResult PrepareZummerResult(string query, Value page)
+        {
+            string url;
+            var myUri = new Uri(page.url);
+
+            if (myUri.Host == "www.bing.com" && myUri.AbsolutePath == "/cr")
+            {
+                url = HttpUtility.ParseQueryString(myUri.Query).Get("r");
+            }
+            else
+            {
+                url = page.url;
+            }
+
+            var zummerResult = new ZummerSearchResult
+            {
+                Url = url,
+                Query = query,
+                Tile = page.name,
+                Snippet = page.snippet
+            };
+
+            return zummerResult;
+        }
+
+        private string DisplaySpecificResults(Newtonsoft.Json.Linq.JToken resultIndex, Newtonsoft.Json.Linq.JToken items, string title, params string[] fields)
+        {
+            string displaystr = "";
+            if (resultIndex == null)
+            {
+                foreach (Newtonsoft.Json.Linq.JToken item in items)
+                {
+                   displaystr = displaystr +  DisplayItem(item, title, fields);
+                }
+            }
+            else
+            {
+                displaystr = displaystr + DisplayItem(items.ElementAt((int)resultIndex), title, fields);
+            }
+            return displaystr;
+        }
+
+        private string DisplayItem(Newtonsoft.Json.Linq.JToken item, string title, string[] fields)
+        {
+            string displaystr = "";
+            //Console.WriteLine($"{title}: ");
+            //foreach (string field in fields)
+            //{
+            //    displaystr = displaystr + item[field].ToString();
+            //}
+            string resultTitle = item[fields[0]].ToString();
+            string resultUrl = item[fields[1]].ToString();
+            string resultSnippet = item[fields[2]].ToString();
+            displaystr = $"### [{resultTitle}]({resultUrl})\n{resultSnippet}\n\n";
+
+
+            return displaystr;
+        }
+
+        private string DisplayAllRankedResults(Newtonsoft.Json.Linq.JObject responseObjects)
+        {
+            string[] rankingGroups = new string[] { "mainline"};
+            string displaystr = "";
+            // Loop through the ranking groups in priority order
+            foreach (string rankingName in rankingGroups)
+            {
+                Newtonsoft.Json.Linq.JToken rankingResponseItems = responseObjects.SelectToken($"rankingResponse.{rankingName}.items");
+                if (rankingResponseItems != null)
+                {
+                    foreach (Newtonsoft.Json.Linq.JObject rankingResponseItem in rankingResponseItems)
+                    {
+                        Newtonsoft.Json.Linq.JToken resultIndex;
+                        rankingResponseItem.TryGetValue("resultIndex", out resultIndex);
+                        var answerType = rankingResponseItem.Value<string>("answerType");
+                        switch (answerType)
+                        {
+                            case "WebPages":
+                                displaystr = displaystr + DisplaySpecificResults(resultIndex, responseObjects.SelectToken("webPages.value"), "WebPage", "name", "url", "snippet");
+                                
+                                break;
+                            //case "News":
+                            //    DisplaySpecificResults(resultIndex, responseObjects.SelectToken("news.value"), "News", "name", "url", "description");
+                            //    break;
+                            //case "Images":
+                            //    DisplaySpecificResults(resultIndex, responseObjects.SelectToken("images.value"), "Image", "thumbnailUrl");
+                            //    break;
+                            //case "Videos":
+                            //    DisplaySpecificResults(resultIndex, responseObjects.SelectToken("videos.value"), "Video", "embedHtml");
+                            //    break;
+                            //case "RelatedSearches":
+                            //    DisplaySpecificResults(resultIndex, responseObjects.SelectToken("relatedSearches.value"), "RelatedSearch", "displayText", "webSearchUrl");
+                            //    break;
+                        }
+                        if (displaystr != "")
+                        {
+                            return displaystr;
+                        }
+                    }
+                }
+            }
+            return displaystr;
         }
 
     }

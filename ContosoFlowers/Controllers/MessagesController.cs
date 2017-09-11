@@ -40,7 +40,8 @@
                 //    var dialog = scope.Resolve<IDialog<object>>(TypedParameter.From(checkOutRouteUri));
                 //    await Conversation.SendAsync(activity, () => dialog);
                 //}
-                await Conversation.SendAsync(activity, () => new RootLuisDialog());
+                var luisObj = new RootLuisDialog();
+                await Conversation.SendAsync(activity, () => luisObj);
             }
             else
             {

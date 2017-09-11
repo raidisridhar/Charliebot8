@@ -88,6 +88,15 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hmm... I did not understand that. Rephrase your message and try again..
+        /// </summary>
+        internal static string FallbackIntentMessage {
+            get {
+                return ResourceManager.GetString("FallbackIntentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The category &quot;{0} is invalid. Please try again..
         /// </summary>
         internal static string FlowerCategoriesDialog_InvalidOption {
@@ -115,11 +124,38 @@ namespace ContosoFlowers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hi! What would you like to read about? I can fetch you the best Wikipedia results on any subject..
+        /// </summary>
+        internal static string GreetOnDemand {
+            get {
+                return ResourceManager.GetString("GreetOnDemand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More on Bing.
+        /// </summary>
+        internal static string MoreOnBing {
+            get {
+                return ResourceManager.GetString("MoreOnBing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What&apos;s the {&amp;}?.
         /// </summary>
         internal static string Order_RecipientFirstName_Prompt {
             get {
                 return ResourceManager.GetString("Order_RecipientFirstName_Prompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Powered by {0}.
+        /// </summary>
+        internal static string PowerBy {
+            get {
+                return ResourceManager.GetString("PowerBy", resourceCulture);
             }
         }
         
@@ -457,6 +493,15 @@ namespace ContosoFlowers.Properties {
         internal static string RootDialog_Welcome_Title {
             get {
                 return ResourceManager.GetString("RootDialog_Welcome_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here you go..
+        /// </summary>
+        internal static string SearchTopicTypeMessage {
+            get {
+                return ResourceManager.GetString("SearchTopicTypeMessage", resourceCulture);
             }
         }
         

@@ -190,6 +190,14 @@
     <Compile Include="Dialogs\BouquetsDialog.cs" />
     <Compile Include="Dialogs\FlowerCategoriesDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
+    <Compile Include="Handlers\GreetingIntentHandler.cs" />
+    <Compile Include="Handlers\HandlerFactory.cs" />
+    <Compile Include="Handlers\IHandlerFactory.cs" />
+    <Compile Include="Handlers\IIntentHandler.cs" />
+    <Compile Include="Handlers\SearchIntentHandler.cs" />
+    <Compile Include="Handlers\ZummerStrings.cs" />
+    <Compile Include="Models\Search\BingSearch.cs" />
+    <Compile Include="Models\Search\ZummerSearchResult.cs" />
     <Compile Include="Models\UserPreferences.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -201,7 +209,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\ApiHandler.cs" />
+    <Compile Include="Services\BingSearchService.cs" />
+    <Compile Include="Services\IApiHandler.cs" />
+    <Compile Include="Services\ISearchService.cs" />
     <Compile Include="StringConstants.cs" />
+    <Compile Include="Strings.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -236,7 +249,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
